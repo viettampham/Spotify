@@ -27,10 +27,20 @@ public class LovedSongService:ILovedSongService
                     Author = ls.Song.Author,
                     Singers = ls.Song.Singers,
                     ImageURL = ls.Song.ImageURL,
-                    Category = ls.Song.Category
+                    PathMusic = ls.Song.PathMusic,
+                    Category = ls.Song.Category,
+                    IsDelete = ls.Song.IsDelete
                 }
             }).ToList();
-        return listLovedSong;
+        var listLovedSongResponse = new List<LovedSongResponse>();
+        foreach (var ls in listLovedSong)
+        {
+            if (ls.Song.IsDelete == false)
+            {
+                listLovedSongResponse.Add(ls);
+            }
+        }
+        return listLovedSongResponse;
     }
 
     public LovedSongResponse CreateLovedSong(CreateLovedSongRequest request)

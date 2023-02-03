@@ -20,6 +20,13 @@ public class SongController:ControllerBase
         var listSong = _songService.GetListSong();
         return Ok(listSong);
     }
+    
+    [HttpGet("get-list-song-deleted")]
+    public IActionResult GetSongDeleted()
+    {
+        var listSong = _songService.GetListSongDeleted();
+        return Ok(listSong);
+    }
 
     [HttpPost("create-song")]
     public IActionResult CreateSong(CreateSongRequest request)
@@ -35,10 +42,17 @@ public class SongController:ControllerBase
         return Ok(targetSong);
     }
 
-    [HttpDelete("delete-song")]
+    [HttpPost("delete-song")]
     public IActionResult DeleteSong(Guid id)
     {
         var targetSong = _songService.DeleteSong(id);
+        return Ok(targetSong);
+    }
+
+    [HttpPost("restore-song")]
+    public IActionResult RestoreSong(Guid id)
+    {
+        var targetSong = _songService.RestoreSong(id);
         return Ok(targetSong);
     }
 }

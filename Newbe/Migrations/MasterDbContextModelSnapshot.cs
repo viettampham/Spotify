@@ -271,7 +271,14 @@ namespace Newbe.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PathMusic")
                         .IsRequired()
                         .HasColumnType("text");
 

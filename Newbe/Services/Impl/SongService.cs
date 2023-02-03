@@ -22,9 +22,43 @@ public class SongService:ISongService
             Author = s.Author,
             Singers = s.Singers,
             ImageURL = s.ImageURL,
-            CategoryName = s.Category.Name
+            PathMusic = s.PathMusic,
+            CategoryName = s.Category.Name,
+            IsDelete = s.IsDelete,
         }).ToList();
-        return listSong;
+        var listSongResponse = new List<SongResponse>();
+        foreach (var song in listSong)
+        {
+            if (song.IsDelete == false)
+            {
+                listSongResponse.Add(song);
+            }
+        }
+        return listSongResponse;
+    }
+
+    public List<SongResponse> GetListSongDeleted()
+    {
+        var listSong = _context.Songs.Select(s => new SongResponse()
+        {
+            SongID = s.SongID,
+            Name = s.Name,
+            Author = s.Author,
+            Singers = s.Singers,
+            ImageURL = s.ImageURL,
+            PathMusic = s.PathMusic,
+            CategoryName = s.Category.Name,
+            IsDelete = s.IsDelete,
+        }).ToList();
+        var listSongResponse = new List<SongResponse>();
+        foreach (var song in listSong)
+        {
+            if (song.IsDelete == true)
+            {
+                listSongResponse.Add(song);
+            }
+        }
+        return listSongResponse;
     }
 
     public SongResponse CreateSong(CreateSongRequest request)
@@ -38,7 +72,9 @@ public class SongService:ISongService
             Author = request.Author,
             Singers = request.Singers,
             ImageURL = request.ImageURL,
-            Category = targetCategory
+            PathMusic = request.PathMusic,
+            Category = targetCategory,
+            IsDelete = false
         };
         _context.Add(newSong);
         _context.SaveChanges();
@@ -49,7 +85,9 @@ public class SongService:ISongService
             Author = newSong.Author,
             Singers = newSong.Singers,
             ImageURL = newSong.ImageURL,
-            CategoryName = newSong.Category.Name
+            PathMusic = newSong.PathMusic,
+            CategoryName = newSong.Category.Name,
+            IsDelete = false
         };
     }
 
@@ -68,6 +106,7 @@ public class SongService:ISongService
         targetSong.Author = request.Author;
         targetSong.Singers = request.Singers;
         targetSong.ImageURL = request.ImageURL;
+        targetSong.PathMusic = request.PathMusic;
         targetSong.Category = targetCategory;
         _context.SaveChanges();
         return new SongResponse()
@@ -77,29 +116,38 @@ public class SongService:ISongService
             Author = targetSong.Author,
             Singers = targetSong.Singers,
             ImageURL = targetSong.ImageURL,
+            PathMusic = targetSong.PathMusic,
             CategoryName = targetSong.Category.Name
         };
     }
 
-    public SongResponse DeleteSong(Guid id)
+    public bool DeleteSong(Guid id)
     {
         var targetSong = _context.Songs.FirstOrDefault(s => s.SongID == id);
-        if (targetSong == null)
+        var targetLovedSong = _context.LovedSongs.FirstOrDefault(ls => ls.Song.SongID == id);
+        if (targetSong != null)
         {
-            throw new Exception("not found");
+            targetSong.IsDelete = true;
+            targetLovedSong.Song.IsDelete = true;
+            _context.SaveChanges();
+            return true;
         }
 
-        _context.Remove(targetSong);
-        _context.SaveChanges();
+        return false;
+    }
 
-        return new SongResponse()
+    public bool RestoreSong(Guid id)
+    {
+        var targetSong = _context.Songs.FirstOrDefault(s => s.SongID == id);
+        var targetLovedSong = _context.LovedSongs.FirstOrDefault(ls => ls.Song.SongID == id);
+
+        if (targetSong != null)
         {
-            SongID = targetSong.SongID,
-            Name = targetSong.Name,
-            Author = targetSong.Author,
-            Singers = targetSong.Singers,
-            ImageURL = targetSong.ImageURL,
-            CategoryName = targetSong.Category.Name
-        };
+            targetSong.IsDelete = false;
+            targetLovedSong.Song.IsDelete = false;
+            _context.SaveChanges();
+            return true;
+        }
+        return false;
     }
 }

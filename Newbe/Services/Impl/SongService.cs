@@ -124,11 +124,9 @@ public class SongService:ISongService
     public bool DeleteSong(Guid id)
     {
         var targetSong = _context.Songs.FirstOrDefault(s => s.SongID == id);
-        var targetLovedSong = _context.LovedSongs.FirstOrDefault(ls => ls.Song.SongID == id);
         if (targetSong != null)
         {
             targetSong.IsDelete = true;
-            targetLovedSong.Song.IsDelete = true;
             _context.SaveChanges();
             return true;
         }
@@ -139,12 +137,10 @@ public class SongService:ISongService
     public bool RestoreSong(Guid id)
     {
         var targetSong = _context.Songs.FirstOrDefault(s => s.SongID == id);
-        var targetLovedSong = _context.LovedSongs.FirstOrDefault(ls => ls.Song.SongID == id);
 
         if (targetSong != null)
         {
             targetSong.IsDelete = false;
-            targetLovedSong.Song.IsDelete = false;
             _context.SaveChanges();
             return true;
         }

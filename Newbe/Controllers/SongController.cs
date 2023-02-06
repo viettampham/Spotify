@@ -20,6 +20,13 @@ public class SongController:ControllerBase
         var listSong = _songService.GetListSong();
         return Ok(listSong);
     }
+
+    [HttpGet("get-song-by-category")]
+    public IActionResult GetSongByCategory(Guid id)
+    {
+        var listSong = _songService.GetListSongByCategory(id);
+        return Ok(listSong);
+    }
     
     [HttpGet("get-list-song-deleted")]
     public IActionResult GetSongDeleted()

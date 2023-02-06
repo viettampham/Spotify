@@ -56,10 +56,26 @@ public class UserService:IUserService
         {
             Id = Guid.NewGuid(),
             UserName = request.UserName,
+            
         };
         var newPassword = await _userManager.CreateAsync(newUser, request.PassWord);
+        
         if (newPassword.Succeeded)
         {
+            if (request.RoleName == "")
+            {
+                await _userManager.AddToRoleAsync(newUser,"user");
+            }
+            else
+            {
+                var targetRole = _context.Roles.FirstOrDefault(r => r.Name == request.RoleName);
+                if (targetRole == null)
+                {
+                    throw new Exception("not found this role");
+                }
+                await _userManager.AddToRoleAsync(newUser,targetRole.Name);
+
+            }
             return true;
         }
         return false;

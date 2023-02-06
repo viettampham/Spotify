@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices.ComTypes;
+using Microsoft.EntityFrameworkCore;
 using Newbe.Models;
 using Newbe.Models.RequestModels;
 using Newbe.Models.ViewModels;
@@ -34,6 +35,34 @@ public class SongService:ISongService
                 listSongResponse.Add(song);
             }
         }
+        return listSongResponse;
+    }
+
+    public List<SongResponse> GetListSongByCategory(Guid id)
+    {
+        var listSong = _context.Songs
+            .Include(s=>s.Category)
+            .Select(s=>s).ToList();
+        var listSongResponse = new List<SongResponse>();
+        foreach (var song in listSong)
+        {
+            if (song.Category.ID == id)
+            {
+                var songResponse = new SongResponse()
+                {
+                    SongID = song.SongID,
+                    Name = song.Name,
+                    Author = song.Author,
+                    Singers = song.Singers,
+                    ImageURL = song.ImageURL,
+                    PathMusic = song.PathMusic,
+                    CategoryName = song.Category.Name,
+                    IsDelete = song.IsDelete
+                };
+                listSongResponse.Add(songResponse);
+            }
+        }
+
         return listSongResponse;
     }
 

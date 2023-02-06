@@ -7,6 +7,7 @@ namespace Newbe.Services;
 public interface ISongService
 {
     List<SongResponse> GetListSong();
+    List<SongResponse> GetListSongByCategory(Guid id);
     List<SongResponse> GetListSongDeleted();
     SongResponse CreateSong(CreateSongRequest request);
     SongResponse EditSong(EditSongRequest request);

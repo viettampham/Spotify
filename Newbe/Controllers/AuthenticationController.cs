@@ -30,7 +30,7 @@ public class AuthenticationController:ControllerBase
         return Ok(newUser);
     }
 
-    [Authorize]
+    /*[Authorize(Roles = "admin")]*/
     [HttpGet("Get-list-user")]
     public IActionResult GetListUser()
     {

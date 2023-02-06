@@ -6,7 +6,7 @@ namespace Newbe.Services;
 public interface IRoleService
 {
     List<RoleResponse> GetRole(); 
-    bool CreateRole(CreateRoleRequest request);
+    Task<RoleResponse> CreateRole(CreateRoleRequest request);
     RoleResponse EditRole(EditRoleRequest request);
     bool DeleteRole(Guid id);
     

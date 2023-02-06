@@ -1,4 +1,5 @@
 using System.Text;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //cau hinh DB
 builder.Services.AddDbContextPool<MasterDbContext>(options =>
-    options.UseNpgsql("Server=localhost;Port=5432;Database=BeSpotify;User Id=postgres;Password=Ptam12@8;"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("BloggingDatabase")));
 //add scope
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
@@ -24,7 +25,8 @@ builder.Services.AddScoped<ILovedSongService, LovedSongService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 
-
+builder.Services.AddAutoMapper(typeof(Program)); 
+builder.Services.AddControllersWithViews();
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<MasterDbContext>()

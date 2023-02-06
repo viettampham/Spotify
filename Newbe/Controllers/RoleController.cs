@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newbe.Models.RequestModels;
+using Newbe.Models.ViewModels;
 using Newbe.Services;
 
 namespace Newbe.Controllers;
@@ -17,15 +18,13 @@ public class RoleController:ControllerBase
     [HttpGet("get-role")]
     public IActionResult GetRole()
     {
-        var listRole = _roleService.GetRole();
-        return Ok(listRole);
+        return Ok(_roleService.GetRole());
     }
 
     [HttpPost("add-role")]
-    public IActionResult CreateRole(CreateRoleRequest request)
+    public async Task<IActionResult> CreateRole(CreateRoleRequest request)
     {
-        var newRole = _roleService.CreateRole(request);
-        return Ok(newRole);
+        return Ok(await _roleService.CreateRole(request));
     }
 
     [HttpPost("edit-role")]

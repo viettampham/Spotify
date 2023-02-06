@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newbe.Models.RequestModels;
 using Newbe.Services;
@@ -29,6 +30,7 @@ public class AuthenticationController:ControllerBase
         return Ok(newUser);
     }
 
+    [Authorize]
     [HttpGet("Get-list-user")]
     public IActionResult GetListUser()
     {

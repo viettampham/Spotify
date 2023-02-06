@@ -56,3 +56,5 @@ D:\TamSpace\SpaceVNPT\Newbe\Newbe\obj\Debug\net6.0\refint\Newbe.dll
 D:\TamSpace\SpaceVNPT\Newbe\Newbe\obj\Debug\net6.0\Newbe.pdb
 D:\TamSpace\SpaceVNPT\Newbe\Newbe\obj\Debug\net6.0\Newbe.genruntimeconfig.cache
 D:\TamSpace\SpaceVNPT\Newbe\Newbe\obj\Debug\net6.0\ref\Newbe.dll
+D:\TamSpace\SpaceVNPT\Newbe\Newbe\bin\Debug\net6.0\AutoMapper.dll
+D:\TamSpace\SpaceVNPT\Newbe\Newbe\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

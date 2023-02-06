@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Newbe.Models;
 using Newbe.Models.RequestModels;
 using Newbe.Models.ViewModels;
@@ -7,10 +8,17 @@ namespace Newbe.Services.Impl;
 
 public class RoleService:IRoleService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly MasterDbContext _context;
-    
+    private readonly IMapper _mapper;
+
+    public RoleService(RoleManager<ApplicationRole> roleManager, MasterDbContext context, IMapper mapper)
+    {
+        _roleManager = roleManager;
+        _context = context;
+        _mapper = mapper;
+    }
+
     public List<RoleResponse> GetRole()
     {
         var listRole = _context.Roles.Select(r => new RoleResponse()
@@ -21,16 +29,20 @@ public class RoleService:IRoleService
         return listRole;
     }
 
-    public bool CreateRole(CreateRoleRequest request)
+    public async Task<RoleResponse> CreateRole(CreateRoleRequest request)
     {
         var newRole = new ApplicationRole()
         {
             Id = Guid.NewGuid(),
             Name = request.RoleName
         };
-        _context.Add(newRole);
-        _context.SaveChanges();
-        return true;
+        await _roleManager.CreateAsync(newRole);
+        await _context.SaveChangesAsync();
+        return new RoleResponse()
+        {
+            RoleID = newRole.Id,
+            Name = newRole.Name
+        };
     }
 
     public RoleResponse EditRole(EditRoleRequest request)
@@ -61,6 +73,7 @@ public class RoleService:IRoleService
         if (targetRole != null)
         {
             _context.Remove(targetRole);
+            _context.SaveChanges();
             return true;
         }
         return false;

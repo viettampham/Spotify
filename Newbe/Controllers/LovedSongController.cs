@@ -20,6 +20,13 @@ public class LovedSongController:ControllerBase
         var listLovedSong = _lovedSongService.GetListSongLoved();
         return Ok(listLovedSong);
     }
+    
+    [HttpGet("get-list-loved-song-by-user")]
+    public IActionResult GetListLovedSongByUser(Guid id)
+    {
+        var listLovedSongByUser = _lovedSongService.GetLovedSongByUser(id);
+        return Ok(listLovedSongByUser);
+    }
 
     [HttpPost("create-loved-song")]
     public IActionResult CreateLovedSong(CreateLovedSongRequest request)

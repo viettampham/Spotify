@@ -22,6 +22,10 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISongService, SongService>();
 builder.Services.AddScoped<ILovedSongService, LovedSongService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+
+
+
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<MasterDbContext>()
     .AddDefaultTokenProviders();

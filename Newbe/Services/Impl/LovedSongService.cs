@@ -43,6 +43,20 @@ public class LovedSongService:ILovedSongService
         return listLovedSongResponse;
     }
 
+    public List<LovedSongResponse> GetLovedSongByUser(Guid id)
+    {
+        var listLovedSong = this.GetListSongLoved();
+        var lovedSongResponses = new List<LovedSongResponse>();
+        foreach (var lovedSong in listLovedSong)
+        {
+            if (lovedSong.UserID == id)
+            {
+                lovedSongResponses.Add(lovedSong);
+            }
+        }
+        return lovedSongResponses;
+    }
+
     public LovedSongResponse CreateLovedSong(CreateLovedSongRequest request)
     {
         var targetSong = _context.Songs

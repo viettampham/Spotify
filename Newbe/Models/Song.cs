@@ -12,6 +12,7 @@ public class Song
     public string ImageURL { get; set; }
     public string PathMusic { get; set; }
     public Category Category { get; set; }
+    public List<Guid> UserLoved { get; set; }
     public bool IsDelete { get; set; }
     
 }

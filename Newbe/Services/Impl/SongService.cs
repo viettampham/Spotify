@@ -25,6 +25,7 @@ public class SongService:ISongService
             ImageURL = s.ImageURL,
             PathMusic = s.PathMusic,
             CategoryName = s.Category.Name,
+            UserLoved = s.UserLoved,
             IsDelete = s.IsDelete,
         }).ToList();
         var listSongResponse = new List<SongResponse>();
@@ -57,6 +58,7 @@ public class SongService:ISongService
                     ImageURL = song.ImageURL,
                     PathMusic = song.PathMusic,
                     CategoryName = song.Category.Name,
+                    UserLoved = song.UserLoved,
                     IsDelete = song.IsDelete
                 };
                 listSongResponse.Add(songResponse);
@@ -77,6 +79,7 @@ public class SongService:ISongService
             ImageURL = s.ImageURL,
             PathMusic = s.PathMusic,
             CategoryName = s.Category.Name,
+            UserLoved = s.UserLoved,
             IsDelete = s.IsDelete,
         }).ToList();
         var listSongResponse = new List<SongResponse>();
@@ -103,6 +106,7 @@ public class SongService:ISongService
             ImageURL = request.ImageURL,
             PathMusic = request.PathMusic,
             Category = targetCategory,
+            UserLoved = new List<Guid>(),
             IsDelete = false
         };
         _context.Add(newSong);
@@ -116,6 +120,7 @@ public class SongService:ISongService
             ImageURL = newSong.ImageURL,
             PathMusic = newSong.PathMusic,
             CategoryName = newSong.Category.Name,
+            UserLoved = newSong.UserLoved,
             IsDelete = false
         };
     }

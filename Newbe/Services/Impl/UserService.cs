@@ -74,7 +74,6 @@ public class UserService:IUserService
                     throw new Exception("not found this role");
                 }
                 await _userManager.AddToRoleAsync(newUser,targetRole.Name);
-
             }
             return true;
         }

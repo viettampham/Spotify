@@ -36,9 +36,9 @@ public class LovedSongController:ControllerBase
     }
 
     [HttpDelete("delete-loved-song")]
-    public IActionResult DeleteLovedSong(DeleteLovedSongRequest request)
+    public IActionResult DeleteLovedSong(Guid id)
     {
-        var targetLovedSong = _lovedSongService.DeleteLovedSong(request);
+        var targetLovedSong = _lovedSongService.DeleteLovedSong(id);
         return Ok(targetLovedSong);
     }
     

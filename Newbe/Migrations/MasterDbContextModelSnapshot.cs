@@ -235,7 +235,7 @@ namespace Newbe.Migrations
 
             modelBuilder.Entity("Newbe.Models.LovedSong", b =>
                 {
-                    b.Property<Guid>("UserID")
+                    b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -245,7 +245,10 @@ namespace Newbe.Migrations
                     b.Property<Guid>("SongID")
                         .HasColumnType("uuid");
 
-                    b.HasKey("UserID");
+                    b.Property<Guid>("UserID")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("ApplicationUserId");
 
@@ -285,6 +288,10 @@ namespace Newbe.Migrations
                     b.Property<List<string>>("Singers")
                         .IsRequired()
                         .HasColumnType("text[]");
+
+                    b.Property<List<Guid>>("UserLoved")
+                        .IsRequired()
+                        .HasColumnType("uuid[]");
 
                     b.HasKey("SongID");
 

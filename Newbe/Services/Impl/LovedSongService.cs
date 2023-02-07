@@ -19,6 +19,7 @@ public class LovedSongService:ILovedSongService
             .Include(ls=>ls.Song)
             .Select(ls => new LovedSongResponse()
             {
+                ID = ls.ID,
                 UserID = ls.UserID,
                 Song = new Song()
                 {
@@ -63,31 +64,42 @@ public class LovedSongService:ILovedSongService
             .FirstOrDefault(s => s.SongID == request.SongID);
         var newLS = new LovedSong()
         {
+            ID = Guid.NewGuid(),
             UserID = request.UserID,
             Song = targetSong
         };
+        
         _context.Add(newLS);
+        targetSong.UserLoved.Add(request.UserID);
         _context.SaveChanges();
+        
         return new LovedSongResponse()
         {
+            ID = newLS.ID,
             UserID = newLS.UserID,
             Song = newLS.Song
         };
     }
 
-    public LovedSongResponse DeleteLovedSong(DeleteLovedSongRequest request)
+    public LovedSongResponse DeleteLovedSong(Guid id)
     {
+        
         var targetLS = _context.LovedSongs
-                .FirstOrDefault(ls => ls.UserID == request.UserID && ls.Song.SongID == request.SongID);
+            .Include(ls=>ls.Song)    
+            .FirstOrDefault(ls => ls.ID == id);
         if (targetLS == null)
         {
             throw new Exception("not found");
         }
 
+        var targetSong = _context.Songs
+            .FirstOrDefault(s => s.SongID == targetLS.Song.SongID);
+        targetSong.UserLoved.Remove(targetLS.UserID);
         _context.Remove(targetLS);
         _context.SaveChanges();
         return new LovedSongResponse()
         {
+            ID = targetLS.ID,
             UserID = targetLS.UserID,
             Song = targetLS.Song
         };

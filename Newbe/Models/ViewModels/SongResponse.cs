@@ -10,5 +10,6 @@ public class SongResponse
     public string PathMusic { get; set; }
     
     public string CategoryName { get; set; }
+    public List<Guid> UserLoved { get; set; }
     public bool IsDelete { get; set; }
 }

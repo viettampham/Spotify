@@ -127,7 +127,7 @@ public class UserService:IUserService
         {
             authClaims.Add(new Claim(ClaimTypes.Role, userRole));
         }
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(DefaultApplication.SecretKey));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(DefaultApplication.SecretKey));// key này phải trùng với key trong hàm Jwtbearer ở trong program.cs nhé cu
 
         var token = new JwtSecurityToken(
             issuer: _configuration["JWT:ValidIssuer"],

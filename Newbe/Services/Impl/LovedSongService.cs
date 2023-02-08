@@ -21,22 +21,21 @@ public class LovedSongService:ILovedSongService
             {
                 ID = ls.ID,
                 UserID = ls.UserID,
-                Song = new Song()
-                {
-                    SongID = ls.Song.SongID,
-                    Name = ls.Song.Name,
-                    Author = ls.Song.Author,
-                    Singers = ls.Song.Singers,
-                    ImageURL = ls.Song.ImageURL,
-                    PathMusic = ls.Song.PathMusic,
-                    Category = ls.Song.Category,
-                    IsDelete = ls.Song.IsDelete
-                }
+                SongID = ls.Song.SongID,
+                Name = ls.Song.Name,
+                Author = ls.Song.Author,
+                Singers = ls.Song.Singers,
+                ImageURL = ls.Song.ImageURL,
+                PathMusic = ls.Song.PathMusic,
+                CategoryName = ls.Song.Category.Name,
+                UserLoved = ls.Song.UserLoved,
+                IsDelete = ls.Song.IsDelete
+                
             }).ToList();
         var listLovedSongResponse = new List<LovedSongResponse>();
         foreach (var ls in listLovedSong)
         {
-            if (ls.Song.IsDelete == false)
+            if (ls.IsDelete == false)
             {
                 listLovedSongResponse.Add(ls);
             }
@@ -77,7 +76,15 @@ public class LovedSongService:ILovedSongService
         {
             ID = newLS.ID,
             UserID = newLS.UserID,
-            Song = newLS.Song
+            SongID = newLS.Song.SongID,
+            Name = newLS.Song.Name,
+            Author = newLS.Song.Author,
+            Singers = newLS.Song.Singers,
+            ImageURL = newLS.Song.ImageURL,
+            PathMusic = newLS.Song.PathMusic,
+            CategoryName = newLS.Song.Category.Name,
+            UserLoved = newLS.Song.UserLoved,
+            IsDelete = newLS.Song.IsDelete
         };
     }
 
@@ -101,7 +108,15 @@ public class LovedSongService:ILovedSongService
         {
             ID = targetLS.ID,
             UserID = targetLS.UserID,
-            Song = targetLS.Song
+            SongID = targetLS.Song.SongID,
+            Name = targetLS.Song.Name,
+            Author = targetLS.Song.Author,
+            Singers = targetLS.Song.Singers,
+            ImageURL = targetLS.Song.ImageURL,
+            PathMusic = targetLS.Song.PathMusic,
+            CategoryName = targetLS.Song.Category.Name,
+            UserLoved = targetLS.Song.UserLoved,
+            IsDelete = targetLS.Song.IsDelete
         };
     }
 }

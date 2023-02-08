@@ -45,13 +45,47 @@ public class UserService:IUserService
         };
     }
 
-    public async Task<bool> Registration(RegistrationUser request)
+    public async Task<string> Registration(RegistrationUser request)
     {
-        if (request.UserName == null)
+        bool checkPvh = false;
+        bool checkPvt = false;
+        bool checkPnumber = false;
+        bool checkusername = false;
+        string Equal = "@gmail.com";
+
+        if (request.UserName.Contains(Equal))
         {
-            throw new Exception("Email can not empty");
+            checkusername = true;
         }
 
+        if (checkusername == false)
+        {
+            return "UserName phải có @gmail.com";
+        }
+
+        for (var i = 0; i < request.PassWord.Length; i++)
+        {
+            if (request.PassWord[i] >= 'A' && request.PassWord[i] <= 'Z')
+            {
+                checkPvh = true;
+            }
+
+            if ((request.PassWord[i] >= 'a' && request.PassWord[i] <='z'))
+            {
+                checkPvt = true;
+            }
+
+            if ((request.PassWord[i] >= 0 && request.PassWord[i] <= 9 ))
+            {
+                checkPnumber = true;
+            }
+        }
+
+        if (checkPvh == false || checkPvt == false || checkPnumber == false)
+        {
+            return "Pasword phải chứa kí tự viết hoa, viết thường, kí tự số, và kí tự đặc biệt";
+        }
+        
         var newUser = new ApplicationUser
         {
             Id = Guid.NewGuid(),
@@ -75,9 +109,9 @@ public class UserService:IUserService
                 }
                 await _userManager.AddToRoleAsync(newUser,targetRole.Name);
             }
-            return true;
+            return "Đăng kí thành công";
         }
-        return false;
+        return "Đăng kí thất bại";
     }
 
     public List<UserResponse> GetlistUsers()

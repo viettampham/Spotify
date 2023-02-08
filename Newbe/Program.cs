@@ -17,8 +17,8 @@ var builder = WebApplication.CreateBuilder(args);
 //cau hinh DB
 builder.Services.AddDbContextPool<MasterDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("BloggingDatabase")));
-//add scope
 
+//add scope
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISongService, SongService>();
 builder.Services.AddScoped<ILovedSongService, LovedSongService>();
@@ -31,52 +31,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
     .AddEntityFrameworkStores<MasterDbContext>()
     .AddDefaultTokenProviders();
-/*//add authen
-builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience ="Spotify",
-                    ValidIssuer = "Ptam123aA@",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(DefaultApplication.SecretKey)),
-                    ClockSkew = TimeSpan.Zero,
-                };
-                /*options.Events = new JwtBearerEvents
-                {
-                    OnMessageReceived = context =>
-                    {
-                        var accessToken = context.Request.Query["access"];
-
-                        var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/image"))
-                        {
-                            context.Token = accessToken;
-                        }
-                        return Task.CompletedTask;
-                    },
-                    OnTokenValidated = async context =>
-                    {
-                        var newIdentity = new ClaimsIdentity();
-                        var accountService = context.HttpContext.RequestServices.GetService<IAccountService>();
-                        IEnumerable<Claim> claims = await accountService.GetClaimsByUser(context);
-                        foreach (Claim claim in claims)
-                        {
-                            newIdentity.AddClaim(claim);
-                        }
-                        context.Principal.AddIdentity(newIdentity);
-                    }
-                };#1#
-            });*/
+//add authentication 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

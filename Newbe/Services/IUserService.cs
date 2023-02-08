@@ -6,7 +6,7 @@ namespace Newbe.Services;
 public interface IUserService
 {
     Task<LoginResponse> Login(LoginRequest request);
-    Task<bool> Registration(RegistrationUser request);
+    Task<string> Registration(RegistrationUser request);
     List<UserResponse> GetlistUsers();
     UserResponse DeleteUser(Guid id);
 }

@@ -37,7 +37,8 @@ public class AuthenticationController:ControllerBase
         var listUser = _userService.GetlistUsers();
         return Ok(listUser);
     }
-
+    
+    [Authorize(Roles = "admin")]
     [HttpDelete("Delete-User{id}")]
     public IActionResult DeleteUser(Guid id)
     {

@@ -27,10 +27,21 @@ public class UserService:IUserService
     
     public async Task<LoginResponse> Login(LoginRequest request)
     {
+        if (!request.UserName.Contains("@gmail.com"))
+        {
+            return new LoginResponse()
+            {
+                Message = "UserName phải có '@gmail.com'"
+            };
+        }
         var User = await _userManager.FindByNameAsync(request.UserName);
         if (User==null)
         {
-            throw new Exception("User not exist");
+            return new LoginResponse()
+            {
+                token = "",
+                Message = "Tài khoản hoặc mật khẩu chưa chính xác"
+            };
         }
 
         var loginResponse = await _userManager.CheckPasswordAsync(User, request.PassWord);
@@ -41,18 +52,13 @@ public class UserService:IUserService
         var token = await GenerateTokenJWTByUser(User);
         return new LoginResponse
         {   
-            token = new JwtSecurityTokenHandler().WriteToken(token)
+            token = new JwtSecurityTokenHandler().WriteToken(token),
+            Message = "Đăng nhập thành công"
         };
     }
 
-    public async Task<string> Registration(RegistrationUser request)
+    public async Task<MessageResponse> Registration(RegistrationUser request)
     {
-        
-        
-        
-        
-        
-        
         bool checkPvh = false;
         bool checkPvt = false;
         bool checkPnumber = false;
@@ -64,7 +70,10 @@ public class UserService:IUserService
         var checkUser = _context.Users.FirstOrDefault(u => u.UserName == request.UserName);
         if (checkUser != null)
         {
-            return "UserName đã tồn tại !";
+            return new MessageResponse()
+            {
+                Message = "UserName đã tồn tại !"
+            };
         }
         
         if (request.UserName.Contains(Equal))
@@ -74,7 +83,10 @@ public class UserService:IUserService
 
         if (checkusername == false)
         {
-            return "UserName phải có '@gmail.com'";
+            return new MessageResponse()
+            {
+                Message = "UserName phải có '@gmail.com'"
+            };
         }
 
         for (var i = 0; i < request.PassWord.Length; i++)
@@ -103,22 +115,34 @@ public class UserService:IUserService
 
         if (checkPvh == false)
         {
-            return "Pasword phải chứa kí tự viết hoa";
+            return new MessageResponse()
+            {
+                Message = "Pasword phải chứa kí tự viết hoa"
+            };
         }
 
         if (checkPvt == false)
         {
-            return "Password phải chứa kí tự viết thường";
+            return new MessageResponse()
+            {
+                Message = "Password phải chứa kí tự viết thường"
+            };
         }
 
         if (checkPnumber == false)
         {
-            return "Password phải chứa kí tự số";
+            return new MessageResponse()
+            {
+                Message = "Password phải chứa kí tự số"
+            };
         }
 
         if (checkPspecial == false)
         {
-            return "Password phải chứa kí tự đặc biệt";
+            return new MessageResponse()
+            {
+                Message = "Password phải chứa kí tự đặc biệt"
+            };
         }
         
         var newUser = new ApplicationUser
@@ -144,9 +168,15 @@ public class UserService:IUserService
                 }
                 await _userManager.AddToRoleAsync(newUser,targetRole.Name);
             }
-            return "Đăng kí thành công";
+            return new MessageResponse()
+            {
+                Message = "Đăng kí thành công"
+            };
         }
-        return "Đăng kí thất bại";
+        return new MessageResponse()
+        {
+            Message = "Đăng kí thất bại"
+        };
     }
 
     public List<UserResponse> GetlistUsers()

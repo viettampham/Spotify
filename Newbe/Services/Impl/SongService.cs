@@ -168,13 +168,16 @@ public class SongService:ISongService
         return false;
     }
 
-    public string DeleteLovedSongByUserID(DeleteUserFromSong request)
+    public MessageResponse DeleteLovedSongByUserID(DeleteUserFromSong request)
     {
         var targetLovedSong = _context.LovedSongs
             .FirstOrDefault(ls => ls.UserID == request.UserID && ls.Song.SongID == request.SongID);
         if (targetLovedSong == null)
         {
-            return "Not found";
+            return new MessageResponse()
+            {
+                Message = "Not found"
+            };
         }
 
         var targetSong = _context.Songs
@@ -183,11 +186,14 @@ public class SongService:ISongService
         _context.Remove(targetLovedSong);
         targetSong.UserLoved.Remove(request.UserID);
         _context.SaveChanges();
-        return "Xóa thành công";
+        return new MessageResponse()
+        {
+            Message = "Xóa thành công"
+        };
     }
 
 
-    public bool RestoreSong(Guid id)
+    public MessageResponse RestoreSong(Guid id)
     {
         var targetSong = _context.Songs.FirstOrDefault(s => s.SongID == id);
 
@@ -195,8 +201,14 @@ public class SongService:ISongService
         {
             targetSong.IsDelete = false;
             _context.SaveChanges();
-            return true;
+            return new MessageResponse()
+            {
+                Message = "Khôi phục thành công"
+            };
         }
-        return false;
+        return new MessageResponse()
+        {
+            Message = "Khôi phục thất bại"
+        };
     }
 }

@@ -57,7 +57,7 @@ public class LovedSongService:ILovedSongService
         return lovedSongResponses;
     }
 
-    public string CreateLovedSong(CreateLovedSongRequest request)
+    public MessageResponse CreateLovedSong(CreateLovedSongRequest request)
     {
         var checkSurvival = _context.LovedSongs
             .FirstOrDefault(ls => ls.UserID == request.UserID && ls.Song.SongID == request.SongID);
@@ -79,10 +79,13 @@ public class LovedSongService:ILovedSongService
         targetSong.UserLoved.Add(request.UserID);
         _context.SaveChanges();
 
-        return "Đã thêm vào bài hát yêu thích";
+        return new MessageResponse()
+        {
+            Message = "Đã thêm vào bài hát yêu thích"
+        };
     }
 
-    public string DeleteLovedSong(Guid id)
+    public MessageResponse DeleteLovedSong(Guid id)
     {
         
         var targetLS = _context.LovedSongs
@@ -98,6 +101,9 @@ public class LovedSongService:ILovedSongService
         targetSong.UserLoved.Remove(targetLS.UserID);
         _context.Remove(targetLS);
         _context.SaveChanges();
-        return "Đã xóa khỏi bài hát yêu thích";
+        return new MessageResponse()
+        {
+            Message = "Đã xóa khỏi bài hát yêu thích"
+        };
     }
 }

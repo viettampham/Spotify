@@ -56,6 +56,13 @@ public class SongController:ControllerBase
         return Ok(targetSong);
     }
 
+    [HttpDelete("delete-user-loved")]
+    public IActionResult DeleteUserLoved(DeleteUserFromSong request)
+    {
+        var targetSong = _songService.DeleteLovedSongByUserID(request);
+        return Ok(targetSong);
+    }
+    
     [HttpPost("restore-song")]
     public IActionResult RestoreSong(Guid id)
     {

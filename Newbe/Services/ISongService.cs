@@ -12,5 +12,6 @@ public interface ISongService
     SongResponse CreateSong(CreateSongRequest request);
     SongResponse EditSong(EditSongRequest request);
     bool DeleteSong(Guid id);
+    string DeleteLovedSongByUserID(DeleteUserFromSong request);
     bool RestoreSong(Guid id);
 }

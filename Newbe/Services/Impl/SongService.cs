@@ -168,6 +168,25 @@ public class SongService:ISongService
         return false;
     }
 
+    public string DeleteLovedSongByUserID(DeleteUserFromSong request)
+    {
+        var targetLovedSong = _context.LovedSongs
+            .FirstOrDefault(ls => ls.UserID == request.UserID && ls.Song.SongID == request.SongID);
+        if (targetLovedSong == null)
+        {
+            return "Not found";
+        }
+
+        var targetSong = _context.Songs
+            .FirstOrDefault(s => s.SongID == request.SongID);
+        
+        _context.Remove(targetLovedSong);
+        targetSong.UserLoved.Remove(request.UserID);
+        _context.SaveChanges();
+        return "Xóa thành công";
+    }
+
+
     public bool RestoreSong(Guid id)
     {
         var targetSong = _context.Songs.FirstOrDefault(s => s.SongID == id);

@@ -7,6 +7,6 @@ public interface ILovedSongService
 {
     List<LovedSongResponse> GetListSongLoved();
     List<LovedSongResponse> GetLovedSongByUser(Guid guid);
-    LovedSongResponse CreateLovedSong(CreateLovedSongRequest request);
-    LovedSongResponse DeleteLovedSong(Guid id);
+    string CreateLovedSong(CreateLovedSongRequest request);
+    string DeleteLovedSong(Guid id);
 }

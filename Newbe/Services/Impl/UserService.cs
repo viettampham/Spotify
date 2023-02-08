@@ -47,12 +47,26 @@ public class UserService:IUserService
 
     public async Task<string> Registration(RegistrationUser request)
     {
+        
+        
+        
+        
+        
+        
         bool checkPvh = false;
         bool checkPvt = false;
         bool checkPnumber = false;
+        bool checkPspecial = false;
+        
         bool checkusername = false;
         string Equal = "@gmail.com";
 
+        var checkUser = _context.Users.FirstOrDefault(u => u.UserName == request.UserName);
+        if (checkUser != null)
+        {
+            return "UserName đã tồn tại !";
+        }
+        
         if (request.UserName.Contains(Equal))
         {
             checkusername = true;
@@ -60,7 +74,7 @@ public class UserService:IUserService
 
         if (checkusername == false)
         {
-            return "UserName phải có @gmail.com";
+            return "UserName phải có '@gmail.com'";
         }
 
         for (var i = 0; i < request.PassWord.Length; i++)
@@ -75,23 +89,44 @@ public class UserService:IUserService
                 checkPvt = true;
             }
 
-            if ((request.PassWord[i] >= 0 && request.PassWord[i] <= 9 ))
+            if ((request.PassWord[i] >= '0' && request.PassWord[i] <= '9' ))
             {
                 checkPnumber = true;
             }
+            
+            if (request.PassWord[i] == '@')
+            {
+                checkPspecial = true;
+            }
+        }
+        
+
+        if (checkPvh == false)
+        {
+            return "Pasword phải chứa kí tự viết hoa";
         }
 
-        if (checkPvh == false || checkPvt == false || checkPnumber == false)
+        if (checkPvt == false)
         {
-            return "Pasword phải chứa kí tự viết hoa, viết thường, kí tự số, và kí tự đặc biệt";
+            return "Password phải chứa kí tự viết thường";
+        }
+
+        if (checkPnumber == false)
+        {
+            return "Password phải chứa kí tự số";
+        }
+
+        if (checkPspecial == false)
+        {
+            return "Password phải chứa kí tự đặc biệt";
         }
         
         var newUser = new ApplicationUser
         {
             Id = Guid.NewGuid(),
             UserName = request.UserName,
-            
         };
+        
         var newPassword = await _userManager.CreateAsync(newUser, request.PassWord);
         
         if (newPassword.Succeeded)

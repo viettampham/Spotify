@@ -63,7 +63,7 @@ public class LovedSongService:ILovedSongService
             .FirstOrDefault(ls => ls.UserID == request.UserID && ls.Song.SongID == request.SongID);
         if (checkSurvival != null)
         {
-            throw new Exception("User nay da thich bai hat truoc day roi");
+            throw new Exception("User da thich bai hat nay truoc day roi");
         }
 
         var targetSong = _context.Songs
@@ -81,6 +81,7 @@ public class LovedSongService:ILovedSongService
 
         return new MessageResponse()
         {
+            Status = 200,
             Message = "Đã thêm vào bài hát yêu thích"
         };
     }
@@ -103,6 +104,7 @@ public class LovedSongService:ILovedSongService
         _context.SaveChanges();
         return new MessageResponse()
         {
+            Status = 200,
             Message = "Đã xóa khỏi bài hát yêu thích"
         };
     }

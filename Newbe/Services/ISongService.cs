@@ -11,7 +11,7 @@ public interface ISongService
     List<SongResponse> GetListSongDeleted();
     SongResponse CreateSong(CreateSongRequest request);
     SongResponse EditSong(EditSongRequest request);
-    bool DeleteSong(Guid id);
+    MessageResponse DeleteSong(Guid id);
     MessageResponse DeleteLovedSongByUserID(DeleteUserFromSong request);
     MessageResponse RestoreSong(Guid id);
 }

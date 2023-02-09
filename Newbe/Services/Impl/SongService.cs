@@ -155,17 +155,25 @@ public class SongService:ISongService
         };
     }
 
-    public bool DeleteSong(Guid id)
+    public MessageResponse DeleteSong(Guid id)
     {
         var targetSong = _context.Songs.FirstOrDefault(s => s.SongID == id);
         if (targetSong != null)
         {
             targetSong.IsDelete = true;
             _context.SaveChanges();
-            return true;
+            return new MessageResponse()
+            {
+                Status = 200,
+                Message = "Xóa thành công"
+            };
         }
 
-        return false;
+        return new MessageResponse()
+        {
+            Status = 400,
+            Message = "Xóa thất bại"
+        };
     }
 
     public MessageResponse DeleteLovedSongByUserID(DeleteUserFromSong request)
@@ -176,6 +184,7 @@ public class SongService:ISongService
         {
             return new MessageResponse()
             {
+                Status = 404,
                 Message = "Not found"
             };
         }
@@ -188,6 +197,7 @@ public class SongService:ISongService
         _context.SaveChanges();
         return new MessageResponse()
         {
+            Status = 200,
             Message = "Xóa thành công"
         };
     }
@@ -203,11 +213,13 @@ public class SongService:ISongService
             _context.SaveChanges();
             return new MessageResponse()
             {
+                Status = 200,
                 Message = "Khôi phục thành công"
             };
         }
         return new MessageResponse()
         {
+            Status = 400,
             Message = "Khôi phục thất bại"
         };
     }

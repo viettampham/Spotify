@@ -84,16 +84,22 @@ builder.Services.AddSwaggerGen(options =>
 
 
 
-builder.Services.AddCors(options =>
+/*builder.Services.AddCors(options =>
 {
     // this defines a CORS policy called "default"
     options.AddPolicy("default", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins("http://localhost:4200","https://spotify-lt.web.app/")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
-});
+});*/
+
+builder.Services.AddCors(policyBuilder =>
+    policyBuilder.AddDefaultPolicy(policy =>
+        policy.WithOrigins("*").AllowAnyHeader().AllowAnyHeader())
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -103,19 +109,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
+app.UseCors(options => options.AllowAnyOrigin());
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-app.UseCors(options => options.AllowAnyOrigin());
 app.Run();

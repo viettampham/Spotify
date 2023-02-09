@@ -53,7 +53,8 @@ public class UserService:IUserService
         return new LoginResponse
         {   
             token = new JwtSecurityTokenHandler().WriteToken(token),
-            Message = "Đăng nhập thành công"
+            Message = "Đăng nhập thành công",
+            Status = 200
         };
     }
 
@@ -72,7 +73,8 @@ public class UserService:IUserService
         {
             return new MessageResponse()
             {
-                Message = "UserName đã tồn tại !"
+                Message = "UserName đã tồn tại !",
+                Status = 404
             };
         }
         
@@ -85,7 +87,8 @@ public class UserService:IUserService
         {
             return new MessageResponse()
             {
-                Message = "UserName phải có '@gmail.com'"
+                Message = "UserName phải có '@gmail.com'",
+                Status = 404
             };
         }
 
@@ -117,7 +120,8 @@ public class UserService:IUserService
         {
             return new MessageResponse()
             {
-                Message = "Pasword phải chứa kí tự viết hoa"
+                Message = "Pasword phải chứa kí tự viết hoa",
+                Status = 404
             };
         }
 
@@ -125,7 +129,8 @@ public class UserService:IUserService
         {
             return new MessageResponse()
             {
-                Message = "Password phải chứa kí tự viết thường"
+                Message = "Password phải chứa kí tự viết thường",
+                Status = 404
             };
         }
 
@@ -133,7 +138,8 @@ public class UserService:IUserService
         {
             return new MessageResponse()
             {
-                Message = "Password phải chứa kí tự số"
+                Message = "Password phải chứa kí tự số",
+                Status = 404
             };
         }
 
@@ -141,7 +147,8 @@ public class UserService:IUserService
         {
             return new MessageResponse()
             {
-                Message = "Password phải chứa kí tự đặc biệt"
+                Message = "Password phải chứa kí tự đặc biệt",
+                Status = 404
             };
         }
         
@@ -170,12 +177,14 @@ public class UserService:IUserService
             }
             return new MessageResponse()
             {
-                Message = "Đăng kí thành công"
+                Message = "Đăng kí thành công",
+                Status = 200
             };
         }
         return new MessageResponse()
         {
-            Message = "Đăng kí thất bại"
+            Message = "Đăng kí thất bại",
+            Status = 404
         };
     }
 
@@ -189,7 +198,7 @@ public class UserService:IUserService
         return listUser;
     }
 
-    public UserResponse DeleteUser(Guid id)
+    public MessageResponse DeleteUser(Guid id)
     {
         var targetUser = _context.Users.FirstOrDefault(user => user.Id == id);
         if (targetUser==null)
@@ -199,10 +208,10 @@ public class UserService:IUserService
 
         _context.Remove(targetUser);
         _context.SaveChanges();
-        return new UserResponse
+        return new MessageResponse()
         {
-            id = targetUser.Id,
-            UserName = targetUser.UserName,
+            Message = "Xóa thành công",
+            Status = 200
         };
     }
     

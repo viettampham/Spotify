@@ -23,7 +23,7 @@ public class CategoryService:ICategoryService
         return listCategory;
     }
 
-    public CategoryResponse CreateCategory(CreateCategoryRequest request)
+    public MessageResponse CreateCategory(CreateCategoryRequest request)
     {
         var newCategory = new Category()
         {
@@ -32,14 +32,14 @@ public class CategoryService:ICategoryService
         };
         _context.Add(newCategory);
         _context.SaveChanges();
-        return new CategoryResponse()
+        return new MessageResponse()
         {
-            ID = newCategory.ID,
-            Name = newCategory.Name
+            Status = 200,
+            Message = "Tạo thành công"
         };
     }
 
-    public CategoryResponse EditCategory(EditCategoryRequest request)
+    public MessageResponse EditCategory(EditCategoryRequest request)
     {
         var targetCategory = _context.Categories.FirstOrDefault(c => c.ID == request.ID);
         if (targetCategory == null)
@@ -49,14 +49,14 @@ public class CategoryService:ICategoryService
 
         targetCategory.Name = request.Name;
         _context.SaveChanges();
-        return new CategoryResponse()
+        return new MessageResponse()
         {
-            ID = targetCategory.ID,
-            Name = targetCategory.Name
-        }; 
+            Status = 200,
+            Message = "Sửa thành công"
+        };
     }
 
-    public CategoryResponse DeleteCategory(Guid id)
+    public MessageResponse DeleteCategory(Guid id)
     {
         var targetCategory = _context.Categories.FirstOrDefault(c => c.ID == id);
         if (targetCategory == null)
@@ -66,10 +66,10 @@ public class CategoryService:ICategoryService
 
         _context.Remove(targetCategory);
         _context.SaveChanges();
-        return new CategoryResponse()
+        return new MessageResponse()
         {
-            ID = targetCategory.ID,
-            Name = targetCategory.Name
-        }; 
+            Status = 200,
+            Message = "Xóa thành công"
+        };
     }
 }

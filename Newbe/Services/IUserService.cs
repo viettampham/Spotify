@@ -8,5 +8,5 @@ public interface IUserService
     Task<LoginResponse> Login(LoginRequest request);
     Task<MessageResponse> Registration(RegistrationUser request);
     List<UserResponse> GetlistUsers();
-    UserResponse DeleteUser(Guid id);
+    MessageResponse DeleteUser(Guid id);
 }
